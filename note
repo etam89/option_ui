@@ -1,0 +1,7 @@
+
+TO ADD A PYTHON PAGE
+
+1. create a python code to serve browser in /var/www/html/wasgi
+2. add alias for python code
+    /etc/apache2/conf-enabled/wsgi.conf:WSGIScriptAlias /plt_iv_skew /var/www/html/wasgi/plt_iv_skew.py
+

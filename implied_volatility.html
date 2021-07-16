@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="jquery-3.6.0.min.js"></script>
+	<script src="black-scholes.js"></script>
+<script>
+	var eval_from=null;
+	var opt=0
+	var v;
+function eval_iv(){
+	evaliv=true;
+	v=getImpliedVolatility($('#optcall').val(),$('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#rate').val()/100,$('#type').val(),$('#dividend').val())*100;
+	$('#iv').val(v.toFixed(2));
+}
+function eval_either(){
+	if (eval_from=== null) return;
+	if (eval_from=='iv') {
+		optcall=blackScholes($('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#iv').val()/100,$('#rate').val()/100,'call',$('#dividend').val());
+		optput=blackScholes($('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#iv').val()/100,$('#rate').val()/100,'put',$('#dividend').val());
+		v=$('#iv').val();
+		$('#optcall').val(optcall.toFixed(3));
+  		$('#optcall').css("background-color","#CCCCCC");
+		$('#optput').val(optput.toFixed(3));
+  		$('#optput').css("background-color","#CCCCCC");
+	} else if (eval_from=='call') {
+		optcall=$('#optcall').val();
+		v=getImpliedVolatility($('#optcall').val(),$('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#rate').val()/100,'call',$('#dividend').val())*100;
+		$('#iv').val(v.toFixed(2));
+  		$('#iv').css("background-color","#CCCCCC");
+		optput=blackScholes($('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#iv').val()/100,$('#rate').val()/100,'put',$('#dividend').val());
+		$('#optput').val(optput.toFixed(3));
+  		$('#optput').css("background-color","#CCCCCC");
+	} else {
+		optput=$('#optput').val();
+		v=getImpliedVolatility($('#optput').val(),$('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#rate').val()/100,'put',$('#dividend').val())*100;
+		$('#iv').val(v.toFixed(2));
+  		$('#iv').css("background-color","#CCCCCC");
+		optcall=blackScholes($('#stock').val(),$('#strike').val(),$('#days').val()/365,$('#iv').val()/100,$('#rate').val()/100,'call',$('#dividend').val());
+		$('#optcall').val(optcall.toFixed(3));
+  		$('#optcall').css("background-color","#CCCCCC");
+	}
+	/* iv table*/
+	tbl='';
+	stock=Number($('#stock').val());
+	strike=Number($('#strike').val());
+	t=Number($('#days').val())/365;
+	r=Number($('#rate').val())/100;
+
+	ivprice=Math.sqrt(v*$('#days').val()/36500)*stock;
+	for (i=0;i<2.6;i+=0.2){
+		tbl+='<tr><td>'+(i).toFixed(1)+'</td><td>$'+(ivprice*i).toFixed(2)+'</td><td>$'+(stock-ivprice*i).toFixed(2)+'</td><td>-</td><td>$'+(stock+ivprice*i).toFixed(2)+'</td></tr>';
+	}
+	$('#ivtbldiv').html('<table class="center"><tr><th>Sigma</th><th>Price Delta</th><th colspan="3">Price Range</th></tr>'+tbl+'</table>');
+	$('#ivtbldiv').show();
+	/* greek table*/
+	tbl='';
+	tbl+='<tr><td class="left-text">$1 change is Spot Price</td><td>$'+Number(getDelta(stock,strike,t,v,r,'Call')).toFixed(3)+'</td><td>$'+(getDelta(stock,strike,t,v,r,'Put')).toFixed(3)+'</td></tr>';
+	tbl+='<tr><td class="left-text">One Day Time Value Reduction</td><td>$'+Number(getTheta(stock,strike,t,v,r,'call')).toFixed(3)+'</td><td>$'+(getTheta(stock,strike,t,v,r,'Put')).toFixed(3)+'</td></tr>';
+	tbl+='<tr><td class="left-text">1% Increase in Volatility</td><td>$'+Number(getVega(stock,strike,t,v,r,'call')).toFixed(3)+'</td><td>$'+(getVega(stock,strike,t,v,r,'Put')).toFixed(3)+'</td></tr>';
+	tbl+='<tr><td class="left-text">0.1% Increase in Interest Rate</td><td>$'+Number(getRho(stock,strike,t,v,r,"call")/10).toFixed(3)+'</td><td>$'+(getRho(stock,strike,t,v,r,"Put")/10).toFixed(3)+'</td></tr>';
+	$('#greektbldiv').html('<table class="center"><tr><th>Scenario</th><th>Call Price Change</th><th>Put Price Change</th></tr>'+tbl+'</table>');
+	$('#greektbldiv').show();
+
+
+}
+$(document).ready(function(){
+	var timeout = null;
+	$('#optcall').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+	      eval_from='call';
+	      eval_either();
+	  }, 1000);
+		})
+	$('#optput').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+	      eval_from='put';
+	      eval_either();
+	  }, 1000);
+		})
+	$('#iv').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+	      eval_from='iv';
+	      eval_either();
+	  }, 1000);
+		})
+	$('#stock').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+		if (eval_from!=null) eval_from='iv';
+		eval_either();
+	  }, 1000);
+		})
+	$('#strike').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+		if (eval_from!=null) eval_from='iv';
+		eval_either();
+	  }, 1000);
+		})
+	$('#days').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+		if (eval_from!=null) eval_from='iv';
+		eval_either();
+	  }, 1000);
+		})
+	$('#rate').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+		if (eval_from!=null) eval_from='iv';
+		eval_either();
+	  }, 1000);
+		})
+	$('#dividend').keyup(function(e) {
+	  clearTimeout(timeout);
+	  timeout = setTimeout(() => {
+		if (eval_from!=null) eval_from='iv';
+		eval_either();
+	  }, 1000);
+		})
+	$(':text').keydown(function(e) {
+		$(this).css("background-color", "#FFFFFF");
+		})
+});
+</script>
+<style>
+th,td{ padding-left:20px;}
+.center { margin-left: auto; margin-right: auto; }
+H2 {text-align:center}
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+.left-text{
+	text-align: left;
+}
+table{border:1px solid grey;}
+</style>
+</head>
+<body>
+<h2>Option Implied Volatility and Volume</h2>
+
+<table class='center' style="border:none">
+	<tr> <td> Option Type</td><td><select id="type" style="width:208px"><option value="Call">Call</option><option value="Put">Put</option></select></td></tr>
+	<tr> <td> Spot Price</td><td>               <input type="text" id="stock"     style="width:200px"></td></tr>
+	<tr> <td> Strike Price</td><td>             <input type="text" id="strike"    style="width:200px"></td></tr>
+	<tr> <td> Time To Expire</td><td>           <input type="text" id="days"      style="width:200px">&nbsp;Days</td></tr>
+	<tr> <td> Risk Free Rate</td><td>           <input type="text" id="rate"      style="width:200px" value="2">&nbsp;%</td></tr>
+	<tr> <td> Dividend</td><td>                 <input type="text" id="dividend"  style="width:200px" value="0">&nbsp;%</td></tr>
+	<tr> <td colspan="2"> &nbsp;</td></tr>
+	<tr> <td colspan="2"> &nbsp;</td></tr>
+	<tr> <td> Implied Volatility</td><td>  <input type="text" id="iv"   style="width:200px">%</td></tr>
+	<tr> <td> Call Option Price</td><td>   <input type="text" id="optcall"  style="width:200px"></td></tr>
+	<tr> <td> Put Option Price</td><td>    <input type="text" id="optput"   style="width:200px"></td></tr>
+</table>
+<div id="ivtbldiv" style="width:100%;text-align:center;visible:hidden;padding-top:20px;border:1px grey;"></div>
+<div id="greektbldiv" style="width:100%;text-align:center;visible:hidden;padding-top:20px;border:1px grey;"></div>
+<!--<p>Enter Stock symbol, expiration and trade date:</p> -->
+<!-- <button>Click me</button> -->
+<br/>
+<iframe id='iframe' frameborder="0" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:200px;width:100%;border:none;overflow:hidden;">
+</iframe>
+
+</body>
+</html>
