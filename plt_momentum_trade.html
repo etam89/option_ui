@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#button").click(function(){
+	  var checked='off';
+	  if ($('#indicator').is(":checked")) checked='on'
+	   
+/*    $('#iframe').attr('src','http://142.4.214.112/plt_momentum_trade?sym='+$('#sym').val()+'&&span='+$('#span').val()+'&&indicator='+$('#indicator').val());*/
+    $('#iframe').attr('src','http://142.4.214.112/plt_momentum_trade?sym='+$('#sym').val()+'&&span='+$('#span').val()+'&&indicator='+checked);
+  });
+});
+</script>
+<style>
+th,td{ padding-left:20px;}
+.center { margin-left: auto; margin-right: auto; }
+H2 {text-align:center}
+</style>
+</head>
+<body>
+<h2>Momentum Trade Signal</h2>
+
+<table class='center'>
+	<tr> <td> Symbol:</td>
+	     <td> Span:</td>
+	     <td> Show Indicator:</td></tr>
+	<tr> <td> <input type="text" id="sym"></td>
+	     <td> <input type="text" id="span"></td>
+	     <td> <input type="checkbox" id="indicator" name="indicator"></td>
+	     <td> <input type="button"   id="button" value="show"></td></tr>
+</table>
+<!--<p>Enter Stock symbol, expiration and trade date:</p> -->
+<!-- <button>Click me</button> -->
+<br/>
+<iframe id='iframe' frameborder="0" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:200px;width:100%;border:none;overflow:hidden;">
+</iframe>
+
+</body>
+</html>

@@ -1,71 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<script src="jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function(){
-	/*
-  $("button").click(function(){
-    $('#iframe').attr('src','http://142.4.214.112/plt_iv_skew?sym='+$('#sym').val()+'&&expiration='+$('#expiration').val()+'&&tradedate='+$('#tradedate').val());
-  });
-  */
-	var timeout = null;
-	$('#sym').keyup(function(e) {
-	  clearTimeout(timeout);
-	  timeout = setTimeout(() => {
-	      console.log($(this).val());
-		  $.getJSON('req.php',{"req":"option_expiration","sym":$('#sym').val()},
-			  function(data){
-				  $('#p').text(data.status);
-				  console.log(data);
-				  var list="<option value=\"\"></option>";
-				  for (op of data.result){
-					  list+="<option value='"+op+"'>"+op+"</option> ";
-				  }
-				  $("#expiration").empty().append(list);
-			  });
-
-	  }, 1000);
-	});
-	$('#expiration').change(function(){
-		  $.getJSON('req.php',{"req":"option_tradedate","sym":$('#sym').val(),"expiration":$('#expiration option:selected').text()},
-			  function(data){
-				  console.log(data);
-				  var list="<option value=\"\"></option>";
-				  for (op of data.result){
-					  list+="<option vlaue='"+op+"'>"+op+"</option> ";
-				  }
-				  $("#tradedate").empty().append(list);
-			  });
-	});
-	$('#tradedate').change(function(){
-    		$("p").hide();
-    		$('#iframe').attr('src','http://142.4.214.112/plt_iv_skew?sym='+$('#sym').val()+'&&expiration='+$('#expiration').val()+'&&tradedate='+$('#tradedate').val());
-	});
-});
-</script>
-<style>
-th,td{ padding-left:20px;}
-.center { margin-left: auto; margin-right: auto; }
-H2 {text-align:center}
-</style>
-</head>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-<h2>Option Implied Volatility and Volume</h2>
 
-<table class='center'>
-	<tr> <td> Symbol:</td>
-	     <td> Expiration:</td>
-	     <td> Trade Date:</td></tr>
-	<tr> <td> <input type="text" id="sym"></td>
-	     <td> <select id="expiration" style="width:120px"></select></td>
-	     <td> <select id="tradedate" style="width:120px"></select></td></tr>
-</table>
-<!--<p>Enter Stock symbol, expiration and trade date:</p> -->
-<!-- <button>Click me</button> -->
-<br/>
-<iframe id='iframe' frameborder="0" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:200px;width:100%;border:none;overflow:hidden;">
-</iframe>
+<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:160px;">
+  <a href="#" class="w3-bar-item w3-button">Link 1</a>
+  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+  Accordion <i class="fa fa-caret-down"></i>
+  </button>
+  <div id="demoAcc" class="w3-hide w3-white w3-card">
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+    <a href="#" class="w3-bar-item w3-button">Link</a>
+  </div>
+
+  <div class="w3-dropdown-click">
+    <button class="w3-button" onclick="myDropFunc()">
+      Dropdown <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="demoDrop" class="w3-dropdown-content w3-bar-block w3-white w3-card">
+      <a href="#" class="w3-bar-item w3-button">Link</a>
+      <a href="#" class="w3-bar-item w3-button">Link</a>
+    </div>
+  </div>
+  <a href="#" class="w3-bar-item w3-button">Link 2</a>
+  <a href="#" class="w3-bar-item w3-button">Link 3</a>
+</div>
+
+<div id="content" class="w3-container" style="margin-left:160px">
+
+</div>
+
+<script>
+function myAccFunc() {
+  var x = document.getElementById("demoAcc");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-green";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-green", "");
+  }
+}
+
+function myDropFunc() {
+  var x = document.getElementById("demoDrop");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-green";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-green", "");
+  }
+}
+</script>
 
 </body>
 </html>
