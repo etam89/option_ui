@@ -24,6 +24,15 @@ switch ($_REQUEST['req']){
 		}
 		
 		break;
+	case 'stock_rt_tradedate':
+		$sql='select distinct date(time) from stock_rt where symbol="'.trim($_REQUEST['sym']).'" order by  date(time)';
+		$result=$conn->query($sql);
+		$myObj->result=array();
+		foreach ($result->fetch_all() as $r){
+			$myObj->result[]=$r[0];
+		}
+		
+		break;
 }
 $myJSON = json_encode($myObj);
 echo $myJSON;

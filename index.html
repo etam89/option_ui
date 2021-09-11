@@ -1,63 +1,16 @@
-<!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
-
-<div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:160px;">
-  <a href="#" class="w3-bar-item w3-button">Link 1</a>
-  <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
-  Accordion <i class="fa fa-caret-down"></i>
-  </button>
-  <div id="demoAcc" class="w3-hide w3-white w3-card">
-    <a href="#" class="w3-bar-item w3-button">Link</a>
-    <a href="#" class="w3-bar-item w3-button">Link</a>
-  </div>
-
-  <div class="w3-dropdown-click">
-    <button class="w3-button" onclick="myDropFunc()">
-      Dropdown <i class="fa fa-caret-down"></i>
-    </button>
-    <div id="demoDrop" class="w3-dropdown-content w3-bar-block w3-white w3-card">
-      <a href="#" class="w3-bar-item w3-button">Link</a>
-      <a href="#" class="w3-bar-item w3-button">Link</a>
-    </div>
-  </div>
-  <a href="#" class="w3-bar-item w3-button">Link 2</a>
-  <a href="#" class="w3-bar-item w3-button">Link 3</a>
-</div>
-
-<div id="content" class="w3-container" style="margin-left:160px">
-
-</div>
-
-<script>
-function myAccFunc() {
-  var x = document.getElementById("demoAcc");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-    x.previousElementSibling.className += " w3-green";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-    x.previousElementSibling.className = 
-    x.previousElementSibling.className.replace(" w3-green", "");
-  }
-}
-
-function myDropFunc() {
-  var x = document.getElementById("demoDrop");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-    x.previousElementSibling.className += " w3-green";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-    x.previousElementSibling.className = 
-    x.previousElementSibling.className.replace(" w3-green", "");
-  }
-}
-</script>
-
+	<table style="width:100%">
+		<tr>
+			<td> <a href="implied_volatility.html">Calculate Implied Volatility</a></td>
+			<td> <a href="option_strangle.html">Option Strangle (RT Data)</a></td>
+			<td> <a href="plt_iv_skew.html">Plot IV Sckew</a></td>
+		</tr>
+		<tr>
+			<td> <a href="plt_max_pain_history.html">Plot Historical Max_Pain</a></td>
+			<td> <a href="plt_max_pain.html">Max Pain</a></td>
+			<td> <a href="plt_momentum_trade.html">Stock Momemtum</a></td>
+			<td> <a href="plt_stock_intraday.html">Stock Intra-Day Plot</a></td>
+		</td>
 </body>
 </html>
